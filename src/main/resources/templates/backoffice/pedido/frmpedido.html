@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+    <meta charset="UTF-8">
+    <title>Mantenimiento de Pedidos</title>
+</head>
+<body>
+<script th:src="@{/scripts/web/backoffice/pedido/frmMantPedido.js}"
+        type="text/javascript"></script>
+<nav th:replace="~{layout::menu}"></nav>
+<div class="card ">
+    <div class="card-header text-bg-dark mb-3">
+        Mantenimiento de Pedidos
+    </div>
+    <div class="card-body">
+        <button id="btnagregar"
+                type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
+        <hr />
+        <div id="mensaje"></div>
+        <table id="tblpedido" class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Atencion</th>
+                <th scope="col">Moneda</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">IGV</th>
+                <th scope="col">Total</th>
+                <th scope="col">Comentario</th>
+                <th scope="col">Enviado</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Id cliente</th>
+                <th scope="col">Nombre cliente</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido :${listapedidos}">
+                <td th:text="${pedido.id}"></td>
+                <td th:text="${pedido.fecha}"></td>
+                <td th:text="${pedido.atencion}"></td>
+                <td th:text="${pedido.moneda}"></td>
+                <td th:text="${pedido.subtotal}"></td>
+                <td th:text="${pedido.igv}"></td>
+                <td th:text="${pedido.total}"></td>
+                <td th:text="${pedido.comentario}"></td>
+                <td th:text="${pedido.enviado}"></td>
+                <td th:text="${pedido.estado}"></td>
+                <td th:text="${pedido.cliente.id}"></td>
+                <td th:text="${pedido.cliente.nombre}"></td>
+                <td>
+                    <button type="button" class="btn btn-info btnactualizar"
+                            th:data-id="${pedido.id}"
+                            th:data-fecha="${pedido.fecha}"
+                            th:data-atencion="${pedido.atencion}"
+                            th:data-moneda="${pedido.moneda}"
+                            th:data-subtotal="${pedido.subtotal}"
+                            th:data-igv="${pedido.igv}"
+                            th:data-total="${pedido.total}"
+                            th:data-comentario="${pedido.comentario}"
+                            th:data-enviado="${pedido.enviado}"
+                            th:data-estado="${pedido.estado}"
+                            th:data-t_cliente_id="${pedido.cliente.id}"
+                            th:data-t_cliente_nombre="${pedido.cliente.nombre}"><i class="fas fa-edit"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Registrar / Actualizar Pedido -->
+<div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Pedido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div align="left" class="modal-body">
+                <div align="left" class="mb-3">
+                    <label for="txtfecha" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" id="txtfecha">
+                </div>
+                <div class="mb-3">
+                    <label for="cbocliente" class="form-label">Cliente</label>
+                    <select id="cbocliente" class="form-control"></select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtatencion" class="form-label">Atencion</label>
+                    <input type="text" class="form-control" id="txtatencion">
+                </div>
+                <div class="mb-3">
+                    <label for="cbomoneda" class="form-label">Moneda</label>
+                    <select name="cbomoneda" id="cbomoneda" class="form-control">
+                        <option value="S" selected>Soles</option>
+                        <option value="D">Dólares</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtcomentarios" class="form-label">Comentarios</label>
+                    <input type="text" class="form-control" id="txtcomentarios">
+                </div>
+                <div class="mb-3" id="swestado">
+                    <label for="cboestado" class="form-label">Estado</label>
+                    <select name="cboestado" id="cboestado" class="form-control">
+                        <option value="A" selected>Activo</option>
+                        <option value="I">Inactivo</option>
+                        <option value="S">Suspendido</option>
+                    </select>
+                </div>
+
+                <Hr>
+                <div class="card-header text-bg-dark mb-3">
+                    Detalle de Pedido
+                </div>
+
+                <div class="mb-3">
+                    <label for="cboproducto" class="form-label">Producto</label>
+                    <select id="cboproducto" class="form-control"></select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtcantidad" class="form-label">Cantidad</label>
+                    <input type="number" class="form-control" id="txtcantidad">
+                </div>
+                <div class="mb-3">
+                    <label for="txtprecio" class="form-label">Precio</label>
+                    <input type="number" class="form-control" id="txtprecio">
+                </div>
+
+                <button id="btnAgregarProducto" type="button" class="btn btn-warning">Agregar producto</button>
+
+                <input type="hidden" id="hdidpedido" value="0">
+
+                <table id="tbldetallepedido" class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Comentarios</th>
+                        <th scope="col">Estado</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+                <button type="button" id="btnguardar" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

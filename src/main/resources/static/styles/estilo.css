@@ -1,0 +1,83 @@
+    /* Barra de navegación */
+    .navbar {
+      background-color: #010100 !important;
+
+    }
+
+    /* Marca de la barra de navegación */
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: bold;
+      color: white !important;
+    }
+
+    /* Enlaces del menú de la barra de navegación */
+    .navbar-nav a {
+      color: white !important;
+    }
+
+    /* Menú desplegable de la barra de navegación */
+    .dropdown-menu {
+      background-color: #010100 !important;
+      color: white !important;
+    }
+
+    /* Elementos del menú desplegable */
+    .dropdown-item {
+      color: white !important;
+    }
+
+    /* Separador del menú desplegable */
+    .dropdown-divider {
+      border-bottom: 1px solid white !important;
+    }
+
+    /* Offcanvas */
+    .offcanvas {
+      background-color: #010100!important;
+      color: white !important;
+    }
+
+    /* Enlaces del menú offcanvas */
+    .offcanvas-body a {
+      color: white !important;
+    }
+
+    /* Menú desplegable offcanvas */
+    .offcanvas-body .dropdown-menu {
+      background-color: #010100 !important;
+    }
+
+    /* Elementos del menú desplegable offcanvas */
+    .offcanvas-body .dropdown-item {
+      color: white !important;
+    }
+
+    /* Separador del menú desplegable offcanvas */
+    .offcanvas-body .dropdown-divider {
+      border-bottom: 1px solid white !important;
+    }
+
+    img {
+      width: 100%;
+    }
+
+
+    /* Enlaces del menú de la barra de navegación al pasar el mouse */
+    .navbar-nav a:hover {
+      background-color: transparent !important;
+      color: white !important;
+    }
+    .navbar-toggler{
+    background-color: #FFFFFF !important;
+    }
+    .username-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* Asegura que ocupe toda la altura de la vista */
+    }
+    .message {
+                font-size: 18px;
+                margin-top: 10px; /* Ajusta el espacio superior según tus necesidades */
+            }

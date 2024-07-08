@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Lepsac</title>
+    <link th:href="@{/styles/bootstrap/bootstrap.css}"
+          rel="stylesheet">
+    <link th:href="@{/styles/bootstrap/bootstrap.min.css}"
+          rel="stylesheet">
+    <link th:src="@{/scripts/bootstrap/bootstrap.bundle.js}"
+          type="text/javascript">
+    <style>
+
+        body {
+            background-image: url('static/imagenes/ingeniero.jpg'); /* Ruta a tu imagen de fondo */
+            background-size: cover; /* Ajusta la imagen al tamaño de la ventana */
+            background-repeat: no-repeat; /* Evita la repetición de la imagen */
+            background-position: left; /* Alinea la imagen hacia el lado derecho */
+
+
+
+        }
+        .card {
+            float: right;
+            height: 100vh;
+        }
+        .form-container  {
+        margin-top: 80px; /* Añade margen superior para mover el contenido hacia abajo */
+        text-align: center;
+    }
+
+    </style>
+
+
+</head>
+<body>
+
+<div class="card" >
+    <img src="static.imagenes/logo.png">
+
+    <div class="card-header">
+        <center>LOGIN</center>
+    </div>
+    <div class="card-body">
+        <div class="form-container">
+        <form th:action="@{/login}" method="post" th:object="${loginmodel}">
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="txtusuario" placeholder="name@example.com" th:field="*{usuario}">
+                <label for="txtusuario">Por Favor Ingresa tu Codigo de Usuario</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="txtpassword" placeholder="Password" th:field="*{password}">
+                <label for="txtpassword">Ingresa Tu Contraseña</label>
+            </div>
+
+            <hr>
+            <center><button type="submit" class="btn btn-primary">INGRESAR</button></center>
+            <br>
+            <center><button type="button" class="btn btn-link">olvide mi contraseña</button></center>
+
+            <div th:if="${visualizar}" class="alert alert-danger" role="alert">
+                USUARIO Y/O PASSWORD INCORRECTO!!
+            </div>
+
+
+
+
+
+        </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

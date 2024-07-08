@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+    <meta charset="UTF-8">
+    <title>Mantenimiento de Órdenes de compra</title>
+</head>
+<body>
+<script th:src="@{/scripts/web/backoffice/ordencompra/frmMantOrdenCompra.js}"
+        type="text/javascript"></script>
+<nav th:replace="~{layout::menu}"></nav>
+<div class="card ">
+    <div class="card-header text-bg-dark mb-3">
+        Mantenimiento de Órdenes de compra
+    </div>
+    <div class="card-body">
+        <button id="btnagregar"
+                type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
+        <hr />
+        <div id="mensaje"></div>
+        <table id="tblpedido" class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Moneda</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">IGV</th>
+                <th scope="col">Total</th>
+                <th scope="col">Comentario</th>
+                <th scope="col">Enviado</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Id proveedor</th>
+                <th scope="col">Nombre proveedor</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ordencompra :${listaordenescompra}">
+                <td th:text="${ordencompra.id}"></td>
+                <td th:text="${ordencompra.fecha}"></td>
+                <td th:text="${ordencompra.tipo}"></td>
+                <td th:text="${ordencompra.moneda}"></td>
+                <td th:text="${ordencompra.subtotal}"></td>
+                <td th:text="${ordencompra.igv}"></td>
+                <td th:text="${ordencompra.total}"></td>
+                <td th:text="${ordencompra.comentarios}"></td>
+                <td th:text="${ordencompra.enviado}"></td>
+                <td th:text="${ordencompra.estado}"></td>
+                <td th:text="${ordencompra.proveedor.id}"></td>
+                <td th:text="${ordencompra.proveedor.nombre}"></td>
+                <td>
+                    <button type="button" class="btn btn-info btnactualizar"
+                            th:data-id="${ordencompra.id}"
+                            th:data-fecha="${ordencompra.fecha}"
+                            th:data-tipo="${ordencompra.tipo}"
+                            th:data-moneda="${ordencompra.moneda}"
+                            th:data-subtotal="${ordencompra.subtotal}"
+                            th:data-igv="${ordencompra.igv}"
+                            th:data-total="${ordencompra.total}"
+                            th:data-comentario="${ordencompra.comentarios}"
+                            th:data-enviado="${ordencompra.enviado}"
+                            th:data-estado="${ordencompra.estado}"
+                            th:data-t_proveedor_id="${ordencompra.proveedor.id}"
+                            th:data-t_proveedor_nombre="${ordencompra.proveedor.nombre}"><i class="fas fa-edit"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Registrar / Actualizar Pedido -->
+<div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Orden Compra</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="cbotipodoc" class="form-label">Tipo documento</label>
+                    <select name="cbotipodoc" id="cbotipodoc" class="form-control">
+                        <option value="R" selected>RUC</option>
+                        <option value="D">DNI</option>
+                        <option value="C">CARNET DE EXTRANJERÍA</option>
+                        <option value="O">OTROS</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtdocumento" class="form-label">Documento</label>
+                    <input type="text" class="form-control" id="txtdocumento">
+                </div>
+                <div class="mb-3">
+                    <label for="txtnombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="txtnombre">
+                </div>
+                <div class="mb-3">
+                    <label for="txtdireccion" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="txtdireccion">
+                </div>
+                <div class="mb-3">
+                    <label for="txtdireccione" class="form-label">Dirección entrega</label>
+                    <input type="text" class="form-control" id="txtdireccione">
+                </div>
+                <div class="mb-3">
+                    <label for="txtdistrito" class="form-label">Distrito</label>
+                    <input type="text" class="form-control" id="txtdistrito">
+                </div>
+                <div class="mb-3">
+                    <label for="txtciudad" class="form-label">Ciudad</label>
+                    <input type="text" class="form-control" id="txtciudad">
+                </div>
+                <div class="mb-3">
+                    <label for="cbotipo" class="form-label">Tipo</label>
+                    <select name="cbotipo" id="cbotipo" class="form-control">
+                        <option value="C" selected>Comercializador</option>
+                        <option value="D">Distribuidor</option>
+                        <option value="I">Integrador</option>
+                        <option value="F">Cliente final</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cbocomercial" class="form-label">Clasificación comercial</label>
+                    <select name="cbocomercial" id="cbocomercial" class="form-control">
+                        <option value="E" selected>Estándar</option>
+                        <option value="S">Silver</option>
+                        <option value="G">Gold</option>
+                        <option value="P">Platinum</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtcomentarios" class="form-label">Comentarios</label>
+                    <input type="text" class="form-control" id="txtcomentarios">
+                </div>
+
+                <div class="mb-3" id="swestado">
+                    <label for="cboestado" class="form-label">Estado</label>
+                    <select name="cboestado" id="cboestado" class="form-control">
+                        <option value="A" selected>Activo</option>
+                        <option value="I">Inactivo</option>
+                        <option value="S">Suspendido</option>
+                    </select>
+                </div>
+
+                <input type="hidden" id="hdidcliente" value="0">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+                <button type="button" id="btnguardar" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

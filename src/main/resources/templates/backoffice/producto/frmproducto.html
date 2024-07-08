@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+    <meta charset="UTF-8">
+    <title>Mantenimiento de productos</title>
+</head>
+<body>
+<script th:src="@{/scripts/web/backoffice/product/frmMantProduct.js}"
+        type="text/javascript"></script>
+<nav th:replace="~{layout::menu}"></nav>
+<div class="card ">
+    <div class="card-header text-bg-dark mb-3">
+        Mantenimiento de Productos
+    </div>
+    <div class="card-body">
+        <button id="btnagregar"
+                type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
+        <hr />
+        <div id="mensaje"></div>
+        <table id="tblproducto" class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Unidad medida</th>
+                <th scope="col">Stock mínimo</th>
+                <th scope="col">Stock máximo</th>
+                <th scope="col">Peso bruto</th>
+                <th scope="col">Peso neto</th>
+                <th scope="col">Alto</th>
+                <th scope="col">Ancho</th>
+                <th scope="col">Profundo</th>
+                <th scope="col">Clasif. Demanda</th>
+                <th scope="col">Clasif. Comercial</th>
+                <th scope="col">Comentarios</th>
+                <th scope="col">Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="producto :${listaproductos}">
+                <td th:text="${producto.id}"></td>
+                <td th:text="${producto.descripcion}"></td>
+                <td th:text="${producto.unidad_medida}"></td>
+                <td th:text="${producto.stock_minimo}"></td>
+                <td th:text="${producto.stock_maximo}"></td>
+                <td th:text="${producto.peso_bruto}"></td>
+                <td th:text="${producto.peso_neto}"></td>
+                <td th:text="${producto.alto}"></td>
+                <td th:text="${producto.ancho}"></td>
+                <td th:text="${producto.profundo}"></td>
+                <td th:text="${producto.clasif_demanda}"></td>
+                <td th:text="${producto.clasif_comercial}"></td>
+                <td th:text="${producto.comentarios}"></td>
+                <td th:text="${producto.estado}"></td>
+                <td>
+                    <button type="button" class="btn btn-info btnactualizar"
+                            th:data-productoid="${producto.id}"
+                            th:data-producto_descripcion="${producto.descripcion}"
+                            th:data-unidad_medida="${producto.unidad_medida}"
+                            th:data-stock_minimo="${producto.stock_minimo}"
+                            th:data-stock_maximo="${producto.stock_maximo}"
+                            th:data-peso_bruto="${producto.peso_bruto}"
+                            th:data-peso_neto="${producto.peso_neto}"
+                            th:data-alto="${producto.alto}"
+                            th:data-ancho="${producto.ancho}"
+                            th:data-profundo="${producto.profundo}"
+                            th:data-clasif_demanda="${producto.clasif_demanda}"
+                            th:data-clasif_comercial="${producto.clasif_comercial}"
+                            th:data-comentarios="${producto.comentarios}"
+                            th:data-productoestado="${producto.estado}"><i class="fas fa-edit"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Registrar / Actualizar Producto -->
+<div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Producto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="txtdescripcion" class="form-label">Descripción</label>
+                    <input type="text" class="form-control" id="txtdescripcion">
+                </div>
+                <div class="mb-3">
+                    <label for="txtum" class="form-label">Unidad de medida</label>
+                    <input type="text" class="form-control" id="txtum">
+                </div>
+                <div class="mb-3">
+                    <label for="txtstockmin" class="form-label">Stock mínimo</label>
+                    <input type="number" class="form-control" id="txtstockmin">
+                </div>
+                <div class="mb-3">
+                    <label for="txtstockmax" class="form-label">Stock máximo</label>
+                    <input type="number" class="form-control" id="txtstockmax">
+                </div>
+                <div class="mb-3">
+                    <label for="txtpesob" class="form-label">Peso bruto</label>
+                    <input type="number" class="form-control" id="txtpesob">
+                </div>
+                <div class="mb-3">
+                    <label for="txtpeson" class="form-label">Peso neto</label>
+                    <input type="number" class="form-control" id="txtpeson">
+                </div>
+                <div class="mb-3">
+                    <label for="txtalto" class="form-label">Alto</label>
+                    <input type="number" class="form-control" id="txtalto">
+                </div>
+                <div class="mb-3">
+                    <label for="txtancho" class="form-label">Ancho</label>
+                    <input type="number" class="form-control" id="txtancho">
+                </div>
+                <div class="mb-3">
+                    <label for="txtprofundo" class="form-label">Profundo</label>
+                    <input type="number" class="form-control" id="txtprofundo">
+                </div>
+
+                <div class="mb-3">
+                    <label for="cbodemanda" class="form-label">Clasificación demanda</label>
+                    <select name="cbodemanda" id="cbodemanda" class="form-control">
+                        <option value="A" selected>Alta demanda</option>
+                        <option value="B">Demanda normal</option>
+                        <option value="C">Baja demanda</option>
+                        <option value="D">Demanda nula</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="cbocomercial" class="form-label">Clasificación comercial</label>
+                    <select name="cbocomercial" id="cbocomercial" class="form-control">
+                        <option value="A" selected>Stock</option>
+                        <option value="B">Importación</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtcomentarios" class="form-label">Comentarios</label>
+                    <input type="text" class="form-control" id="txtcomentarios">
+                </div>
+
+                <div class="mb-3" id="swestado">
+                    <label for="cboestado" class="form-label">Estado</label>
+                    <select name="cboestado" id="cboestado" class="form-control">
+                        <option value="A" selected>Activo</option>
+                        <option value="I">Inactivo</option>
+                        <option value="S">Suspendido</option>
+                    </select>
+                </div>
+
+                <input type="hidden" id="hdidproduct" value="0">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+                <button type="button" id="btnguardar" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
