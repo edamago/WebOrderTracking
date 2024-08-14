@@ -2,223 +2,102 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:fragment="head">
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link th:href="@{/styles/bootstrap/bootstrap.css}"
-          rel="stylesheet">
-    <link th:href="@{/styles/fontawesome/all.css}"
-          rel="stylesheet"/>
-    <link th:href="@{/styles/estilo.css}"
-          rel="stylesheet"/>
-    <script th:src="@{/scripts/bootstrap/bootstrap.bundle.js}"
-            type="text/javascript"></script>
-    <script th:src="@{/scripts/jquery/jquery.js}"
-            type="text/javascript"></script>
+    <title>Tracking System</title>
+    <link th:href="@{/styles/bootstrap/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/styles/fontawesome/all.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/estilo.css}" rel="stylesheet"/>
+    <script th:src="@{/scripts/bootstrap/bootstrap.bundle.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/jquery/jquery.js}" type="text/javascript"></script>
 </head>
 <body>
-<!--
-class="navbar navbar-expand-lg bg-danger" >
-    <nav th:fragment="menu" class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+
+<nav th:fragment="menu" class="navbar navbar-expand-lg bg-primary navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">TRACKING</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="offcanvas offcanvas-start" id="menuLateral" tabindex="-1" aria-labelledby="menuLateralLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="menuLateralLabel">Menu</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav flex-grow-1 pe-3">
+                    <!-- Data Maestra -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dataMaestraDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Data Maestra
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dataMaestraDropdown">
+                            <li><a class="dropdown-item" th:href="@{/backoffice/usuario}">Usuarios</a></li>
+                            <li><a class="dropdown-item" th:href="@{/backoffice/producto}">Productos</a></li>
+                            <li><a class="dropdown-item" th:href="@{/backoffice/cliente}">Clientes</a></li>
+                            <li><a class="dropdown-item" th:href="@{/backoffice/proveedor}">Proveedores</a></li>
+                        </ul>
+                    </li>
+                    <!-- Gestión de ventas -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="gestionVentasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión de ventas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="gestionVentasDropdown">
+                            <li><a class="dropdown-item" th:href="@{/backoffice/pedido}">Pedidos</a></li>
+                            <li><a class="dropdown-item" th:href="@{/backoffice/comprobante}">Comprobantes</a></li>
+                        </ul>
+                    </li>
+                    <!-- Gestión de almacenes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="gestionAlmacenesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión de logística
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="gestionAlmacenesDropdown">
+                            <li><a class="dropdown-item" th:href="@{/backoffice/inventario/ingreso}">Ingreso a almacén</a></li>
+                            <li><a class="dropdown-item" th:href="@{/backoffice/inventario/salida}">Salida de almacén</a></li>
+                        </ul>
+                    </li>
+                    <!-- Gestión de compras -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="gestionComprasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión de compras
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="gestionComprasDropdown">
+                            <li><a class="dropdown-item" th:href="@{/backoffice/ordencompra}">Orden de compra</a></li>
+                        </ul>
+                    </li>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Gestión de tesorería
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="gestionTesoreriaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión de tesorería
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="gestionTesoreriaDropdown">
+                            <li><a class="dropdown-item" th:href="@{/backoffice/cobranza}">Cobranzas</a></li>
+                        </ul>
+                    </li>
+                    -->
 
+                    <!-- Gestión de seguimiento -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="gestionSeguimientoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión de seguimiento
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="gestionSeguimientoDropdown">
+                            <li><a class="dropdown-item" th:href="@{/backoffice/seguimiento}">Actualizar estado de pedidos</a></li>
+                        </ul>
+                    </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Data Maestra
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:href="@{/backoffice/usuario}">
-                            Usuarios</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" th:href="@{/backoffice/producto}">
-                            Productos</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Clientes</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Proveedores</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gestión de ventas
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Pedidos</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Comprobantes</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gestión de almacenes
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Ingreso a almacén</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Salida de almacén</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gestión de compras
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Orden de compra</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gestión de tesorería
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:href="@{/home}">
-                            Cobranzas</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Búsqueda" aria-label="Search">
-                <button class="btn btn-light" type="submit">Búsqueda</button>
-            </form>
+                    <!-- Cerrar Sesión -->
+                    <li class="nav-item">
+                        <form th:action="@{/logout}" method="post" class="d-flex mt-3 mt-lg-0">
+                            <button class="btn btn-light" type="submit">Cerrar Sesión</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
--->
-
-<!--class="navbar navbar-expand-lg bg-danger" >-->
-
-    <nav th:fragment="menu" class="navbar navdar-expand-lg bg-primary">
-
-        <!--nav container start-->
-        <div class="container-fluid">
-
-            <!--nav button-->
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-
-
-            <!--offcanvas main container start-->
-            <section class="offcanvas offcanvas-start" id="menuLateral" tabindex="-1">
-
-                <div class="offcanvas-header"
-                     data-bs-theme="dark">
-
-                    <button
-                            class="btn-close"
-                            type="button"
-                            arial-label="Close"
-                            data-bs-dismiss="offcanvas"
-                    ></button>
-                </div>
-
-                <!--offcanvas menu links start-->
-                <div class="offcanvas-body d-flex flex-colum
-                    justify-content-between px-0">
-                    <ul class="navbar-nav fs-5   justify-content-evenly">
-
-                        <li class="nav-item p-4 py-md-1" style="forecolor:white">
-                            <a href="" class="nav-link"></a>
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-                                Data Maestra
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" th:href="@{/backoffice/usuario}" style="color: white">
-                                    Usuarios</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" th:href="@{/backoffice/producto}" style="color: white">
-                                    Productos</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" th:href="@{/backoffice/cliente}" style="color: white">
-                                    Clientes</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" th:href="@{/backoffice/proveedor}" style="color: white">
-                                    Proveedores</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item p-4 py-md-1">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-                                Gestión de ventas
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" th:href="@{/backoffice/pedido}" style="color: white">
-                                    Pedidos</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" th:href="@{/backoffice/comprobante}" style="color: white">
-                                    Comprobantes</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item p-4 py-md-1" style="color: white">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-                                Gestión de almacenes
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" th:href="@{/backoffice/inventario/ingreso}" style="color: white">
-                                    Ingreso a almacén</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" th:href="@{/backoffice/inventario/salida}" style="color: white">
-                                    Salida de almacén</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item p-4 py-md-1">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-                                Gestión de compras
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" th:href="@{/backoffice/ordencompra}" style="color: white">
-                                    Orden de compra</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item p-4 py-md-1">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
-                                Gestión de tesorería
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" th:href="@{/backoffice/cobranza}" style="color: white">
-                                    Cobranzas</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <form th:action="@{/logout}" method="post" class="d-flex" role="search">
-                                <button class="btn btn-light" type="submit">Cerrar Sesión</button>
-                            </form>
-                        </li>
-
-                    </ul>
-
-                </div>
-            </section>
-            <!--offcanvas main container end-->
-
-
-
-        </div>
-
-    </nav>
 
 </body>
 </html>

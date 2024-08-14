@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+    <meta charset="UTF-8">
+    <title>Actualización estados de pedidos</title>
+</head>
+<body>
+<script th:src="@{/scripts/web/backoffice/seguimiento/frmSeguimiento.js}"
+        type="text/javascript"></script>
+<nav th:replace="~{layout::menu}"></nav>
+<div class="card ">
+    <div class="card-header text-bg-dark mb-3">
+        Actualización estados
+    </div>
+    <div class="card-body">
+        <button id="btnagregar"
+                type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
+        <hr />
+        <div id="mensaje"></div>
+        <table id="tblseguimiento" class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Comentario</th>
+                <th scope="col">Enviado</th>
+                <th scope="col">Estado</th>
+                <th scope="col">id Detalle</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="seguimiento :${listarseguimiento}">
+                <td th:text="${seguimiento.id}"></td>
+                <td th:text="${seguimiento.fecha}"></td>
+                <td th:text="${seguimiento.comentario}"></td>
+                <td th:text="${seguimiento.enviado}"></td>
+                <td th:text="${seguimiento.estado.descripcion}"></td>
+                <td th:text="${seguimiento.detallePedido.id}"></td>
+                <td>
+                    <button type="button" class="btn btn-info btnactualizar"
+                            th:data-id="${seguimiento.id}"
+                            th:data-tipo_documento="${seguimiento.fecha}"
+                            th:data-documento="${seguimiento.comentario}"
+                            th:data-nombre="${seguimiento.enviado}"
+                            th:data-direccion="${seguimiento.estado.descripcion}"
+                            th:data-estado="${seguimiento.detallePedido.id}"><i class="fas fa-edit"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal Registrar / Actualizar Cliente -->
+<div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cliente</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="cbotipodoc" class="form-label">Tipo documento</label>
+                    <select name="cbotipodoc" id="cbotipodoc" class="form-control">
+                        <option value="R" selected>RUC</option>
+                        <option value="D">DNI</option>
+                        <option value="C">CARNET DE EXTRANJERÍA</option>
+                        <option value="O">OTROS</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtdocumento" class="form-label">Documento</label>
+                    <input type="text" class="form-control" id="txtdocumento">
+                </div>
+                <div class="mb-3">
+                    <label for="txtnombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="txtnombre">
+                </div>
+                <div class="mb-3">
+                    <label for="txtdireccion" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="txtdireccion">
+                </div>
+                <div class="mb-3">
+                    <label for="txtdireccione" class="form-label">Dirección entrega</label>
+                    <input type="text" class="form-control" id="txtdireccione">
+                </div>
+                <div class="mb-3">
+                    <label for="txtdistrito" class="form-label">Distrito</label>
+                    <input type="text" class="form-control" id="txtdistrito">
+                </div>
+                <div class="mb-3">
+                    <label for="txtciudad" class="form-label">Ciudad</label>
+                    <input type="text" class="form-control" id="txtciudad">
+                </div>
+                <div class="mb-3">
+                    <label for="cbotipo" class="form-label">Tipo</label>
+                    <select name="cbotipo" id="cbotipo" class="form-control">
+                        <option value="C" selected>Comercializador</option>
+                        <option value="D">Distribuidor</option>
+                        <option value="I">Integrador</option>
+                        <option value="F">Cliente final</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cbocomercial" class="form-label">Clasificación comercial</label>
+                    <select name="cbocomercial" id="cbocomercial" class="form-control">
+                        <option value="E" selected>Estándar</option>
+                        <option value="S">Silver</option>
+                        <option value="G">Gold</option>
+                        <option value="P">Platinum</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtcomentarios" class="form-label">Comentarios</label>
+                    <input type="text" class="form-control" id="txtcomentarios">
+                </div>
+
+                <div class="mb-3" id="swestado">
+                    <label for="cboestado" class="form-label">Estado</label>
+                    <select name="cboestado" id="cboestado" class="form-control">
+                        <option value="A" selected>Activo</option>
+                        <option value="I">Inactivo</option>
+                        <option value="S">Suspendido</option>
+                    </select>
+                </div>
+
+                <input type="hidden" id="hdidcliente" value="0">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+                <button type="button" id="btnguardar" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

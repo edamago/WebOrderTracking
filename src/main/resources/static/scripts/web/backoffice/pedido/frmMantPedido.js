@@ -2,10 +2,11 @@ $(document).ready(function () {
     $('#btnAgregarProducto').on('click', function () {
 
         var producto = $('#cboproducto option:selected').text();
+        var productoId = $('#cboproducto').val();  // Captura el ID del producto
                 console.log('Producto seleccionado:', producto);
         var cantidad = $('#txtcantidad').val();
         var precio = $('#txtprecio').val();
-
+        var comentarios = $('#txtcomentariosdet').val();
 
         if (!producto || !cantidad || !precio) {
             alert('Por favor, complete todos los campos.');
@@ -14,11 +15,11 @@ $(document).ready(function () {
 
 
         var newRow = $('<tr>');
-        newRow.append('<td></td>');  // Puedes asignar un valor si es necesario
+        newRow.append('<td>' + productoId + '</td>');  // Puedes asignar un valor si es necesario
         newRow.append('<td>' + producto + '</td>');
         newRow.append('<td>' + cantidad + '</td>');
         newRow.append('<td>' + precio + '</td>');
-        newRow.append('<td> </td>'); // Puedes asignar un valor si es necesario
+        newRow.append('<td>' + comentarios + '</td>'); // Puedes asignar un valor si es necesario
         newRow.append('<td>A</td>'); // Puedes asignar un valor si es necesario
 
 
@@ -51,7 +52,34 @@ $(document).on("click", "#btnagregar", function(){
     $("#modalNuevo").modal("show");
 });
 
-$(document).on("click", ".btnactualizar", function(){
+$(document).on("click", ".btnactualizar", function() {
+    // Cargar los valores del pedido a partir de los atributos data-* del botón
+    $("#hdidpedido").val($(this).attr("data-id"));
+    $("#txtfecha").val($(this).attr("data-fecha"));
+    $("#txtatencion").val($(this).attr("data-atencion"));
+    $("#cbomoneda").val($(this).attr("data-moneda"));
+    $("#txtcomentarios").val($(this).attr("data-comentario"));
+    $("#cboestado").val($(this).attr("data-estado"));
+
+    // Cargar cliente seleccionado en el select
+    var clienteId = $(this).attr("data-t_cliente_id");
+    var clienteNombre = $(this).attr("data-t_cliente_nombre");
+
+    var cbocliente = $("#cbocliente");
+    cbocliente.empty();  // Limpiar las opciones anteriores
+    cbocliente.append($('<option>', {
+        value: clienteId,
+        text: clienteNombre,
+        selected: true
+    }));
+
+    listarClientes(clienteId);  // Si es necesario, carga otros clientes para el select
+    listarProductos(0);  // Si es necesario, carga los productos
+
+    $("#modalNuevo").modal("show");
+});
+
+//$(document).on("click", ".btnactualizar", function(){
     //$("#hdidcliente").val($(this).attr("data-id"));
     //$("#cbotipodoc").val($(this).attr("data-tipo_documento"));
     //$("#txtdocumento").val($(this).attr("data-documento"));
@@ -65,10 +93,10 @@ $(document).on("click", ".btnactualizar", function(){
     //$("#txtcomentarios").val($(this).attr("data-comentarios"));
     //$("#swestado").show();
     //$("#cboestado").val($(this).attr("data-estado"));
-    listarClientes(0);
-    listarProductos(0);
-    $("#modalNuevo").modal("show");
-});
+    //listarClientes(0);
+    //listarProductos(0);
+    //$("#modalNuevo").modal("show");
+//});
 
 $(document).on("click", "#btnguardar", function(){
     $.ajax({
