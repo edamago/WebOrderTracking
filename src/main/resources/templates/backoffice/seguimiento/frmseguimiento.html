@@ -12,120 +12,130 @@
     <div class="card-header text-bg-dark mb-3">
         Actualización estados
     </div>
+
+
     <div class="card-body">
         <button id="btnagregar"
                 type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
         <hr />
+
+        <div class="mb-3 d-flex">
+            <div class="me-2" style="width: 20%;">
+                <label for="filterIdDetalle" class="form-label">Filtrar por posición:</label>
+                <input type="text" class="form-control" id="filterIdDetalle" placeholder="Ingrese id posición">
+            </div>
+            <div style="width: 40%;">
+                <label for="filterCliente" class="form-label">Filtrar por cliente:</label>
+                <input type="text" class="form-control" id="filterCliente" placeholder="Ingrese nombre del cliente">
+            </div>
+            <div style="width: 40%;">
+                <label for="filterProducto" class="form-label">Filtrar por producto:</label>
+                <input type="text" class="form-control" id="filterProducto" placeholder="Ingrese nombre del producto">
+            </div>
+        </div>
+
+
         <div id="mensaje"></div>
         <table id="tblseguimiento" class="table">
             <thead>
             <tr>
-                <th scope="col">Id</th>
+                <th scope="col">id</th>
+                <th scope="col">Posición</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Cliente</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Comentario</th>
                 <th scope="col">Enviado</th>
                 <th scope="col">Estado</th>
-                <th scope="col">id Detalle</th>
+
             </tr>
             </thead>
             <tbody>
             <tr th:each="seguimiento :${listarseguimiento}">
                 <td th:text="${seguimiento.id}"></td>
+                <td th:text="${seguimiento.detallePedido.id}"></td>
+                <td th:text="${seguimiento.detallePedido.producto.descripcion}"></td>
+                <td th:text="${seguimiento.detallePedido.pedido.cliente.nombre}"></td>
                 <td th:text="${seguimiento.fecha}"></td>
                 <td th:text="${seguimiento.comentario}"></td>
-                <td th:text="${seguimiento.enviado}"></td>
+                <td>
+                    <input type="checkbox" th:checked="${seguimiento.enviado}" disabled>
+                </td>
                 <td th:text="${seguimiento.estado.descripcion}"></td>
-                <td th:text="${seguimiento.detallePedido.id}"></td>
                 <td>
                     <button type="button" class="btn btn-info btnactualizar"
                             th:data-id="${seguimiento.id}"
-                            th:data-tipo_documento="${seguimiento.fecha}"
-                            th:data-documento="${seguimiento.comentario}"
-                            th:data-nombre="${seguimiento.enviado}"
-                            th:data-direccion="${seguimiento.estado.descripcion}"
-                            th:data-estado="${seguimiento.detallePedido.id}"><i class="fas fa-edit"></i></button>
+                            th:data-fecha="${seguimiento.fecha}"
+                            th:data-comentario="${seguimiento.comentario}"
+                            th:data-enviado="${seguimiento.enviado}"
+                            th:data-idestado="${seguimiento.estado.id}"
+                            th:data-nombreestado="${seguimiento.estado.descripcion}"
+                            th:data-iddetalle="${seguimiento.detallePedido.id}"
+                            th:data-idproducto="${seguimiento.detallePedido.producto.id}"
+                            th:data-nombreproducto="${seguimiento.detallePedido.producto.descripcion}"
+                            th:data-idcliente="${seguimiento.detallePedido.pedido.cliente.id}"
+                            th:data-nombrecliente="${seguimiento.detallePedido.pedido.cliente.nombre}"><i class="fas fa-edit"></i></button>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-<!-- Modal Registrar / Actualizar Cliente -->
+<!-- Modal Registrar / Actualizar estado detalle  -->
 <div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Cliente</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Actualización estado</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
-                <div class="mb-3">
-                    <label for="cbotipodoc" class="form-label">Tipo documento</label>
-                    <select name="cbotipodoc" id="cbotipodoc" class="form-control">
-                        <option value="R" selected>RUC</option>
-                        <option value="D">DNI</option>
-                        <option value="C">CARNET DE EXTRANJERÍA</option>
-                        <option value="O">OTROS</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="txtdocumento" class="form-label">Documento</label>
-                    <input type="text" class="form-control" id="txtdocumento">
-                </div>
-                <div class="mb-3">
-                    <label for="txtnombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="txtnombre">
-                </div>
-                <div class="mb-3">
-                    <label for="txtdireccion" class="form-label">Dirección</label>
-                    <input type="text" class="form-control" id="txtdireccion">
-                </div>
-                <div class="mb-3">
-                    <label for="txtdireccione" class="form-label">Dirección entrega</label>
-                    <input type="text" class="form-control" id="txtdireccione">
-                </div>
-                <div class="mb-3">
-                    <label for="txtdistrito" class="form-label">Distrito</label>
-                    <input type="text" class="form-control" id="txtdistrito">
-                </div>
-                <div class="mb-3">
-                    <label for="txtciudad" class="form-label">Ciudad</label>
-                    <input type="text" class="form-control" id="txtciudad">
-                </div>
-                <div class="mb-3">
-                    <label for="cbotipo" class="form-label">Tipo</label>
-                    <select name="cbotipo" id="cbotipo" class="form-control">
-                        <option value="C" selected>Comercializador</option>
-                        <option value="D">Distribuidor</option>
-                        <option value="I">Integrador</option>
-                        <option value="F">Cliente final</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="cbocomercial" class="form-label">Clasificación comercial</label>
-                    <select name="cbocomercial" id="cbocomercial" class="form-control">
-                        <option value="E" selected>Estándar</option>
-                        <option value="S">Silver</option>
-                        <option value="G">Gold</option>
-                        <option value="P">Platinum</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="txtcomentarios" class="form-label">Comentarios</label>
-                    <input type="text" class="form-control" id="txtcomentarios">
-                </div>
 
-                <div class="mb-3" id="swestado">
+                <!--<div class="mb-3">
+                    <label for="txtidPosicion" class="form-label">Id Posición</label>
+                    <input type="text" class="form-control" id="txtidPosicion" readonly>
+                </div>-->
+                <div class="mb-3">
+                    <label for="txtidPosicion" class="form-label">Posición</label>
+                    <select class="form-control" id="txtidPosicion">
+                        <!-- Opciones se llenarán dinámicamente -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cboProducto" class="form-label">Producto</label>
+                    <select class="form-control" id="cboProducto">
+                        <!-- Opciones se llenarán dinámicamente -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cbocliente" class="form-label">Cliente</label>
+                    <select class="form-control" id="cbocliente">
+                        <!-- Opciones se llenarán dinámicamente -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtfecha" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" id="txtfecha">
+                </div>
+                <div class="mb-3">
+                    <label for="txtcomentario" class="form-label">Comentario</label>
+                    <input type="text" class="form-control" id="txtcomentario">
+                </div>
+                <div class="mb-3">
+                    <label for="chkEnviado" class="form-label">Enviado</label>
+                    <input type="checkbox" id="chkEnviado">
+                </div>
+                <div class="mb-3">
                     <label for="cboestado" class="form-label">Estado</label>
-                    <select name="cboestado" id="cboestado" class="form-control">
-                        <option value="A" selected>Activo</option>
-                        <option value="I">Inactivo</option>
-                        <option value="S">Suspendido</option>
+                    <select class="form-control" id="cboestado">
+                        <!-- Opciones se llenarán dinámicamente -->
                     </select>
                 </div>
 
-                <input type="hidden" id="hdidcliente" value="0">
+                <input type="hidden" id="hdidseguimiento" value="0">
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
                 <button type="button" id="btnguardar" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>

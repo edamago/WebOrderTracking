@@ -27,6 +27,21 @@ public class Usuario {
     private Boolean activo;
     @Column(name = "nomusuario")
     private String nomusuario;
+    @Column(name = "dni")
+    private String dni;
+    @Column(name = "ap_paterno")
+    private String ap_paterno;
+    @Column(name = "ap_materno")
+    private String ap_materno;
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "celular")
+    private String celular;
+
+    @ManyToOne
+    @JoinColumn(name = "t_cliente_id")
+    private Cliente cliente;
+
 
     @ManyToMany(cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER)

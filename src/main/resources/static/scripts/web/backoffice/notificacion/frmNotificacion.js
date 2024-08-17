@@ -1,39 +1,28 @@
 $(document).on("click", "#btnagregar", function(){
-    // Ocultar los campos cbocliente y cboProducto
-    $("label[for='cboProducto']").hide();
-    $("#cboProducto").hide();
-    $("label[for='cbocliente']").hide();
-    $("#cbocliente").hide();
 
-    // Habilitar los campos
-    $("#cboestado").prop("disabled", false);
-    $("#cboProducto").prop("disabled", false);
-    $("#cbocliente").prop("disabled", false);
-    $("#txtidPosicion").prop("disabled", false);
+    listarUsuarios("")
+
+    // Ocultar los campos cbocliente y cboProducto
+    //$("label[for='cboProducto']").hide();
+    //$("#cboProducto").hide();
+
 
     // Cargar los datos en el modal
-    $("#hdidseguimiento").val("0");
-    $("#txtidPosicion").val("2");
+    $("#hddidnotificacion").val("0");
+    $("#txtdescripcion").val("");
+    //$("#chkEnviado").prop("checked", false);
+    $("#chkvisto").prop("checked", false);
+    $("#cboestado").val("A");
+    $("#cbousuario").val("0");
+
+    // Obtener el usuario actual
+    //const currentUsuarioId = $(this).attr("data-notificacionidusuario");
 
 
-    $("#txtcomentario").val("");
-    // Establecer chkEnviado como desmarcado por defecto
-    $("#chkEnviado").prop("checked", false);
 
-    // Obtener la fecha actual en formato yyyy-mm-dd
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Meses comienzan en 0
-    const day = String(today.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
+    // Habilitar los campos
+    $("#cbousuario").prop("disabled", false);
 
-    // Establecer la fecha actual en el campo txtfecha
-    $("#txtfecha").val(formattedDate);
-
-    listarEstados("")
-    listarClientes("")
-    listarProductos("")
-    listarPosiciones("")
 
     // Mostrar el modal
     $("#modalNuevo").modal("show");
@@ -41,41 +30,25 @@ $(document).on("click", "#btnagregar", function(){
 
 $(document).on("click", ".btnactualizar", function(){
     // Visibilizar los campos cbocliente y cboProducto
-    $("label[for='cboProducto']").show();
-    $("#cboProducto").show();
-    $("label[for='cbocliente']").show();
-    $("#cbocliente").show();
+    //$("label[for='cboProducto']").show();
+    //$("#cboProducto").show();
+
 
     // Cargar los datos en el modal
-    $("#hdidseguimiento").val($(this).attr("data-id"));
-    $("#txtidPosicion").val($(this).attr("data-iddetalle"));
-    //$("#txtproducto").val($(this).attr("data-nombreproducto"));
-    //$("#txtcliente").val($(this).attr("data-nombrecliente"));
-    $("#txtfecha").val($(this).attr("data-fecha"));
-    $("#txtcomentario").val($(this).attr("data-comentario"));
-
+    $("#hddidnotificacion").val($(this).attr("data-notificacionid"));
+    $("#txtdescripcion").val($(this).attr("data-notificaciondescripcion"));
     //$("#chkEnviado").prop("checked", false);
-    $("#chkEnviado").prop("checked", $(this).attr("data-enviado") === "1");
+    $("#chkvisto").prop("checked", $(this).attr("data-notificacionvisto") === "1");
+    $("#cboestado").val($(this).attr("data-notificacionestado"));
+    $("#cbousuario").val($(this).attr("data-notificacionidusuario"));
 
-    //$("#cboestado").val($(this).attr("data-idestado"));
-    //$("#cbocliente").val($(this).attr("data-idcliente"));
+    // Obtener el usuario actual
+    const currentUsuarioId = $(this).attr("data-notificacionidusuario");
 
-    // Obtener el estado actual
-    const currentPosicionId = $(this).attr("data-iddetalle");
-    const currentEstadoId = $(this).attr("data-idestado");
-    const currentClienteId = $(this).attr("data-idcliente");
-    const currentProductoId = $(this).attr("data-idproducto");
-
-    listarEstados(currentEstadoId)
-    listarClientes(currentClienteId)
-    listarProductos(currentProductoId)
-    listarPosiciones(currentPosicionId)
+    listarUsuarios(currentUsuarioId)
 
     // Deshabilitar los campos
-    $("#cboestado").prop("disabled", true);
-    $("#cboProducto").prop("disabled", true);
-    $("#cbocliente").prop("disabled", true);
-    $("#txtidPosicion").prop("disabled", true);
+    $("#cbousuario").prop("disabled", true);
 
 
     // Mostrar el modal
@@ -84,22 +57,21 @@ $(document).on("click", ".btnactualizar", function(){
 
 $(document).on("click", "#btnguardar", function(){
     // Obtener el estado del checkbox y convertirlo en 0 o 1
-    const enviadoValue = $("#chkEnviado").is(":checked") ? 1 : 0;
+    const vistoValue = $("#chkvisto").is(":checked") ? 1 : 0;
     $.ajax({
         type: "POST",
-        url: "/backoffice/seguimiento/guardar",
+        url: "/backoffice/notificacion/guardar",
         contentType: "application/json",
         data: JSON.stringify({
-            id: $("#hdidseguimiento").val(),
-            fecha: $("#txtfecha").val(),
-            comentario: $("#txtcomentario").val(),
-            enviado: enviadoValue,
-            t_estado_id: $("#cboestado").val(),
-            t_detalle_pedido_id: $("#txtidPosicion").val(),
+            id: $("#hddidnotificacion").val(),
+            descripcion: $("#txtdescripcion").val(),
+            estado: $("#cboestado").val(),
+            visto: vistoValue,
+            t_usuario_id: $("#cbousuario").val()
         }),
         success: function(resultado){
             if(resultado.respuesta){
-                listarDetalle()
+                //listarDetalle()
                 /*$("#tblusuario > tbody").html("");*/
             }
             alert(resultado.mensaje);
@@ -167,7 +139,28 @@ function listarProductos(currentProductoId){
         }
     });
 }
+function listarUsuarios(currentUsuarioId){
+ // Llenar el combobox de estado
+    $.ajax({
+        url: '/backoffice/usuario/listar',
+        method: 'GET',
+        success: function(usuarios) {
+            const usuarioSelect = $("#cbousuario");
+            usuarioSelect.empty(); // Limpiar las opciones existentes
 
+            usuarios.forEach(function(usuario) {
+                const selected = currentUsuarioId == usuario.id ? 'selected' : '';
+
+                const descripcionCompleta = `${usuario.nombre} - ${usuario.ap_paterno} - ${usuario.ap_materno}`;
+
+                usuarioSelect.append(`<option value="${usuario.id}" ${selected}>${descripcionCompleta}</option>`);
+            });
+        },
+        error: function() {
+            console.error('No se pudo cargar los usuarios.');
+        }
+    });
+}
 function listarPosiciones(currentPosicionId){
  // Llenar el combobox de estado
     $.ajax({
@@ -233,31 +226,25 @@ function listarDetalle(){
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    const filterIdInput = document.getElementById('filterIdDetalle');
-    const filterClienteInput = document.getElementById('filterCliente');
-    const filterProductoInput = document.getElementById('filterProducto');
-    const table = document.getElementById('tblseguimiento');
+    const filterUsuarioInput = document.getElementById('filterUsuario');
+
+    const table = document.getElementById('tblnotificacion');
     const rows = table.getElementsByTagName('tr');
 
     function filterTable() {
-        const filterIdValue = filterIdInput.value.toLowerCase();
-        const filterClienteValue = filterClienteInput.value.toLowerCase();
-        const filterProductoValue = filterProductoInput.value.toLowerCase();
+        const filterUsuarioValue = filterUsuarioInput.value.toLowerCase();
+
 
         for (let i = 1; i < rows.length; i++) { // Comienza en 1 para saltar el encabezado
             const cells = rows[i].getElementsByTagName('td');
-            const idDetalleCell = cells[1]; // Columna de posición
-            const productoCell = cells[2]; // Columna de producto
-            const clienteCell = cells[3]; // Columna de cliente
+            const idUsuarioCell = cells[0]; // Columna de usuario
 
-            const idDetalleText = idDetalleCell ? idDetalleCell.textContent.toLowerCase() : '';
-            const productoText = productoCell ? productoCell.textContent.toLowerCase() : '';
-            const clienteText = clienteCell ? clienteCell.textContent.toLowerCase() : '';
+
+            const iUsuarioText = idUsuarioCell ? idUsuarioCell.textContent.toLowerCase() : '';
+
 
             if (
-                idDetalleText.includes(filterIdValue) &&
-                productoText.includes(filterProductoValue) &&
-                clienteText.includes(filterClienteValue)
+                iUsuarioText.includes(filterUsuarioValue)
             ) {
                 rows[i].style.display = ''; // Mostrar fila
             } else {
@@ -266,7 +253,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    filterIdInput.addEventListener('keyup', filterTable);
-    filterClienteInput.addEventListener('keyup', filterTable);
-    filterProductoInput.addEventListener('keyup', filterTable);
+    filterUsuarioInput.addEventListener('keyup', filterTable);
+
 });
