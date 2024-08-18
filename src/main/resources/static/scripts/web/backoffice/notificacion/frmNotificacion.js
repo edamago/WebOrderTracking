@@ -71,7 +71,7 @@ $(document).on("click", "#btnguardar", function(){
         }),
         success: function(resultado){
             if(resultado.respuesta){
-                //listarDetalle()
+                listarDetalle()
                 /*$("#tblusuario > tbody").html("");*/
             }
             alert(resultado.mensaje);
@@ -187,37 +187,27 @@ function listarPosiciones(currentPosicionId){
 function listarDetalle(){
     $.ajax({
         type: "GET",
-        url: "/backoffice/seguimiento/listar",
+        url: "/backoffice/notificacion/listar",
         dataType: "json",
         success: function(resultado){
-            $("#tblseguimiento > tbody").html("");
+            $("#tblnotificacion > tbody").html("");
             $.each(resultado, function(index, value){
 
-                const checkboxEnviado = value.enviado ? "<i class='fas fa-check-square'></i>" : "<i class='far fa-square'></i>";
+                const checkboxVisto = value.visto ? "<i class='fas fa-check-square'></i>" : "<i class='far fa-square'></i>";
 
-                $("#tblseguimiento > tbody").append("<tr>"+
+                $("#tblnotificacion > tbody").append("<tr>"+
+                    "<td>"+value.usuario.nombre+"</td>"+
                     "<td>"+value.id+"</td>"+
-                    "<td>"+value.detallePedido.id+"</td>"+
-                    "<td>"+value.detallePedido.producto.descripcion+"</td>"+
-                    "<td>"+value.detallePedido.pedido.cliente.nombre+"</td>"+
-                    "<td>"+value.fecha+"</td>"+
-                    "<td>"+value.comentario+"</td>"+
-                    //"<td><input type='checkbox' disabled "+checkboxEnviado+"></td>"+
-                    "<td>"+checkboxEnviado+"</td>"+
-                    "<td>"+value.estado.descripcion+"</td>"+
+                    "<td>"+value.descripcion+"</td>"+
+                    "<td>"+value.estado+"</td>"+
+                    "<td>"+checkboxVisto+"</td>"+
                     "<td>"+
                         "<button type='button' class='btn btn-info btnactualizar'" +
-                            " data-id='"+value.id+"'"+
-                            " data-fecha='"+value.fecha+"'"+
-                            " data-comentario='"+value.comentario+"'"+
-                            " data-enviado='"+value.enviado+"'"+
-                            " data-idestado='"+value.estado.id+"'"+
-                            " data-nombreestado='"+value.estado.descripcion+"'"+
-                            " data-iddetalle='"+value.detallePedido.id+"'"+
-                            " data-idproducto='"+value.detallePedido.producto.id+"'"+
-                            " data-nombreproducto='"+value.detallePedido.producto.descripcion+"'"+
-                            " data-idcliente='"+value.detallePedido.pedido.cliente.id+"'"+
-                            " data-nombrecliente='"+value.detallePedido.pedido.cliente.nombre+"'"+
+                            " data-notificacionid='"+value.id+"'"+
+                            " data-notificaciondescripcion='"+value.descripcion+"'"+
+                            " data-notificacionestado='"+value.estado+"'"+
+                            " data-notificacionvisto='"+value.visto+"'"+
+                            " data-notificacionidusuario='"+value.usuario.id+"'"+
                             "><i class='fas fa-edit'></i></button></td></tr>"
                 );
             })

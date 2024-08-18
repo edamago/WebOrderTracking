@@ -3,6 +3,7 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>Tracking System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Importante para la responsividad -->
     <link th:href="@{/styles/bootstrap/bootstrap.css}" rel="stylesheet">
     <link th:href="@{/styles/fontawesome/all.css}" rel="stylesheet"/>
     <link th:href="@{/styles/estilo.css}" rel="stylesheet"/>
@@ -12,7 +13,7 @@
 <body>
 
 <nav th:fragment="menu" class="navbar navbar-expand-lg bg-primary navbar-dark">
-    <div class="container-fluid">
+    <div class="container-fluid"> <!-- Contenedor fluido para ocupar todo el ancho -->
         <a class="navbar-brand" href="#">TRACKING</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-controls="menuLateral">
             <span class="navbar-toggler-icon"></span>
@@ -66,17 +67,6 @@
                         </ul>
                     </li>
 
-                    <!-- Gestión de tesorería
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="gestionTesoreriaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Gestión de tesorería
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="gestionTesoreriaDropdown">
-                            <li><a class="dropdown-item" th:href="@{/backoffice/cobranza}">Cobranzas</a></li>
-                        </ul>
-                    </li>
-                    -->
-
                     <!-- Gestión de seguimiento -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="gestionSeguimientoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -103,3 +93,4 @@
 
 </body>
 </html>
+
