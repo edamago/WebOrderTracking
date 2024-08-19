@@ -31,11 +31,16 @@ public class PedidoController {
         return pedidoService.listarPedidos();
     }
 
+
+    //public ResultadoResponse guardarPedido(@RequestBody PedidoRequest pedidoRequest,List<DetallePedidoRequest> detallePedidoRequestList){
+
+    //    return pedidoService.registrarPedido(pedidoRequest,detallePedidoRequestList);
+    //}
     @PostMapping("/guardar")
     @ResponseBody
-    public ResultadoResponse guardarPedido(@RequestBody PedidoRequest pedidoRequest,List<DetallePedidoRequest> detallePedidoRequestList){
-
-        return pedidoService.registrarPedido(pedidoRequest,detallePedidoRequestList);
+    public ResultadoResponse guardarPedido(@RequestBody PedidoRequest pedidoRequest) {
+        return pedidoService.registrarPedido(pedidoRequest);
     }
+
 
 }

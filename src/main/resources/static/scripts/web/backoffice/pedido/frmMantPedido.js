@@ -3,7 +3,7 @@ $(document).ready(function () {
 
         var producto = $('#cboproducto option:selected').text();
         var productoId = $('#cboproducto').val();  // Captura el ID del producto
-                console.log('Producto seleccionado:', producto);
+        //console.log('Producto seleccionado:', producto);
         var cantidad = $('#txtcantidad').val();
         var precio = $('#txtprecio').val();
         var comentarios = $('#txtcomentariosdet').val();
@@ -30,54 +30,36 @@ $(document).ready(function () {
         $('#cboproducto').val('');
         $('#txtcantidad').val('');
         $('#txtprecio').val('');
+        $('#txtcomentariosdet').val('')
     });
 });
 
-$(document).on("click", "#btnagregar", function(){
-    //$("#hdidcliente").val("0");
-    //$("#cbotipodoc").val("R");
-    //$("#txtdocumento").val("");
-    //$("#txtnombre").val("");
-    //$("#txtdireccion").val("");
-    //$("#txtdireccione").val("");
-    //$("#txtdistrito").val("");
-    //$("#txtciudad").val("");
-    //$("#cbotipo").val("C");
-    //$("#cbocomercial").val("E");
-    //$("#txtcomentarios").val("");
-    //$("#swestado").hide();
-    //$("#cboestado").val("A");
-    listarClientes(0);
-    listarProductos(0);
-    $("#modalNuevo").modal("show");
-});
+//$(document).on("click", ".btnactualizar", function() {
+//    // Cargar los valores del pedido a partir de los atributos data-* del botón
+//    $("#hdidpedido").val($(this).attr("data-id"));
+//    $("#txtfecha").val($(this).attr("data-fecha"));
+//    $("#txtatencion").val($(this).attr("data-atencion"));
+//    $("#cbomoneda").val($(this).attr("data-moneda"));
+//    $("#txtcomentarios").val($(this).attr("data-comentario"));
+//    $("#cboestado").val($(this).attr("data-estado"));
 
-$(document).on("click", ".btnactualizar", function() {
-    // Cargar los valores del pedido a partir de los atributos data-* del botón
-    $("#hdidpedido").val($(this).attr("data-id"));
-    $("#txtfecha").val($(this).attr("data-fecha"));
-    $("#txtatencion").val($(this).attr("data-atencion"));
-    $("#cbomoneda").val($(this).attr("data-moneda"));
-    $("#txtcomentarios").val($(this).attr("data-comentario"));
-    $("#cboestado").val($(this).attr("data-estado"));
+//    // Cargar cliente seleccionado en el select
+//    var clienteId = $(this).attr("data-t_cliente_id");
+//    var clienteNombre = $(this).attr("data-t_cliente_nombre");
 
-    // Cargar cliente seleccionado en el select
-    var clienteId = $(this).attr("data-t_cliente_id");
-    var clienteNombre = $(this).attr("data-t_cliente_nombre");
+ //   var cbocliente = $("#cbocliente");
+ //   cbocliente.empty();  // Limpiar las opciones anteriores
+ //   cbocliente.append($('<option>', {
+ //       value: clienteId,
+ //       text: clienteNombre,
+ //       selected: true
+ //   }));
 
-    var cbocliente = $("#cbocliente");
-    cbocliente.empty();  // Limpiar las opciones anteriores
-    cbocliente.append($('<option>', {
-        value: clienteId,
-        text: clienteNombre,
-        selected: true
-    }));
+ //   listarClientes(clienteId);  // Si es necesario, carga otros clientes para el select
+ //   listarProductos(0);  // Si es necesario, carga los productos
 
-    listarClientes(clienteId);  // Si es necesario, carga otros clientes para el select
-    listarProductos(0);  // Si es necesario, carga los productos
-
-    $("#modalNuevo").modal("show");
-});
+ //   $("#modalNuevo").modal("show");
+//});
 
 //$(document).on("click", ".btnactualizar", function(){
     //$("#hdidcliente").val($(this).attr("data-id"));
@@ -97,36 +79,103 @@ $(document).on("click", ".btnactualizar", function() {
     //listarProductos(0);
     //$("#modalNuevo").modal("show");
 //});
+$(document).on("click", "#btnagregar", function(){
+    $("#hdidpedido").val("0");
+    var today = new Date().toISOString().split('T')[0];
+    $("#txtfecha").val(today);
+
+    //$("#cbotipodoc").val("R");
+    //$("#txtdocumento").val("");
+    //$("#txtnombre").val("");
+    //$("#txtdireccion").val("");
+    //$("#txtdireccione").val("");
+    //$("#txtdistrito").val("");
+    //$("#txtciudad").val("");
+    //$("#cbotipo").val("C");
+    //$("#cbocomercial").val("E");
+    //$("#txtcomentarios").val("");
+    //$("#swestado").hide();
+    //$("#cboestado").val("A");
+    listarClientes(0);
+    listarProductos(0);
+    $("#modalNuevo").modal("show");
+});
 
 $(document).on("click", "#btnguardar", function(){
+    var detallePedidos = [];
+    var subtotal = 0;
+
+    $("#tbldetallepedido tbody tr").each(function() {
+        var productoId = $(this).find("td:eq(0)").text(); // Columna Id
+        var producto = $(this).find("td:eq(1)").text(); // Columna Producto
+        var cantidad = parseFloat($(this).find("td:eq(2)").text()); // Columna Cantidad
+        var precio = parseFloat($(this).find("td:eq(3)").text()); // Columna Precio
+        var comentarios = $(this).find("td:eq(4)").text(); // Columna Comentarios
+        var estado = $(this).find("td:eq(5)").text(); // Columna Estado
+
+        // Mensajes de depuración
+        //console.log('Id Producto:', productoId);
+        //console.log('Producto:', producto);
+        //console.log('Cantidad:', cantidad);
+        //console.log('Precio:', precio);
+        //console.log('Comentarios:', comentarios);
+        //console.log('Estado:', estado);
+
+        var detalle = {
+            id: 0, // Aquí ya no usas id
+            t_producto_id: productoId,
+            cantidad: cantidad,
+            precio: precio,
+            comentarios: comentarios,
+            estado: estado || "A"
+        };
+        detallePedidos.push(detalle);
+        subtotal += cantidad * precio;
+    });
+
+    var igv = subtotal * 0.18; // Suponiendo un IGV del 18%
+    var total = subtotal + igv;
+
+    // Mensaje de depuración antes de la llamada AJAX
+    //console.log('Subtotal:', subtotal);
+    //console.log('IGV:', igv);
+    //console.log('Total:', total);
+
     $.ajax({
         type: "POST",
-        url: "/backoffice/cliente/guardar",
+        url: "/backoffice/pedido/guardar",
         contentType: "application/json",
         data: JSON.stringify({
-            id: $("#hdidcliente").val(),
-            tipo_documento: $("#cbotipodoc").val(),
-            documento: $("#txtdocumento").val(),
-            nombre: $("#txtnombre").val(),
-            direccion: $("#txtdireccion").val(),
-            direccion_entrega: $("#txtdireccione").val(),
-            distrito: $("#txtdistrito").val(),
-            ciudad: $("#txtciudad").val(),
-            tipo: $("#cbotipo").val(),
-            clasif_comercial: $("#cbocomercial").val(),
-            comentarios: $("#txtcomentarios").val(),
+            id: $("#hdidpedido").val(),
+            t_cliente_id: $("#cbocliente").val(),
+            fecha: $("#txtfecha").val(),
+            atencion: $("#txtatencion").val(),
+            moneda: $("#cbomoneda").val(),
+            subtotal: subtotal,
+            igv: igv,
+            total: total,
+            comentario: $("#txtcomentarios").val(),
+            enviado: 0,
             estado: $("#cboestado").val(),
+            detalles: detallePedidos // Añadir la lista de detalles
         }),
         success: function(resultado){
+            console.log('Respuesta del servidor:', resultado);
             if(resultado.respuesta){
-                listarClientes()
-                /*$("#tblusuario > tbody").html("");*/
+                listarDetalle()
+                //$("#tbldetallepedido > tbody").html(""); // Limpiar tabla de detalle si es necesario
             }
             alert(resultado.mensaje);
             $("#modalNuevo").modal("hide");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // Mensaje de depuración en caso de error
+            console.log('Error en la solicitud AJAX:', textStatus, errorThrown);
         }
-    })
+    });
 });
+
+
 
 function listarClientes(idcliente){
     $.ajax({
@@ -168,12 +217,12 @@ function listarProductos(idproducto){
 function listarPedidos(){
     $.ajax({
         type: "GET",
-        url: "/backoffice/cliente/listar",
+        url: "/backoffice/pedido/listar",
         dataType: "json",
         success: function(resultado){
-            $("#tblcliente > tbody").html("");
+            $("#tblpedido > tbody").html("");
             $.each(resultado, function(index, value){
-                $("#tblcliente > tbody").append("<tr>"+
+                $("#tblpedido > tbody").append("<tr>"+
                     "<td>"+value.id+"</td>"+
                     "<td>"+value.tipo_documento+"</td>"+
                     "<td>"+value.documento+"</td>"+
@@ -201,6 +250,49 @@ function listarPedidos(){
                             " data-comentarios='"+value.comentarios+"'"+
                             " data-estado='"+value.estado+"'"+
                             "><i class='fas fa-edit'></i></button></td></tr>"
+                );
+            })
+        }
+    })
+};
+function listarDetalle(){
+    $.ajax({
+        type: "GET",
+        url: "/backoffice/pedido/listar",
+        dataType: "json",
+        success: function(resultado){
+            $("#tblpedido > tbody").html("");
+            $.each(resultado, function(index, value){
+
+                const checkboxEnviado = value.enviado ? "<i class='fas fa-check-square'></i>" : "<i class='far fa-square'></i>";
+
+                $("#tblpedido > tbody").append("<tr>"+
+                    "<td>"+value.id+"</td>"+
+                    "<td>"+value.fecha+"</td>"+
+                    "<td>"+value.atencion+"</td>"+
+                    "<td>"+value.moneda+"</td>"+
+                    "<td>"+value.subtotal+"</td>"+
+                    "<td>"+value.igv+"</td>"+
+                    "<td>"+value.total+"</td>"+
+                    "<td>"+value.comentario+"</td>"+
+                    "<td>"+checkboxEnviado+"</td>"+
+                    "<td>"+value.estado+"</td>"+
+                    "<td>"+value.cliente.id+"</td>"+
+                    "<td>"+value.cliente.nombre+"</td>"+
+                    "<<td>"+
+                        "<button type='button' class='btn btn-info btnactualizar'" +
+                            " data-id='"+value.id+"'"+
+                            " data-fecha='"+value.fecha+"'"+
+                            " data-comentario='"+value.atencion+"'"+
+                            " data-enviado='"+value.moneda+"'"+
+                            " data-idestado='"+value.subtotal+"'"+
+                            " data-nombreestado='"+value.igv+"'"+
+                            " data-iddetalle='"+value.total+"'"+
+                            " data-idproducto='"+value.comentario+"'"+
+                            " data-nombreproducto='"+value.enviado+"'"+
+                            " data-idcliente='"+value.estado+"'"+
+                            " data-nombrecliente='"+value.cliente.id+"'"+
+                            "><i class='fas fa-edit'></i></button></td></tr>>"
                 );
             })
         }

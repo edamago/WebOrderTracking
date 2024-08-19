@@ -7,6 +7,8 @@ import lombok.Data;
 import pe.edu.idat.appwebtracker.model.bd.Cliente;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class PedidoRequest {
     private Integer id;
@@ -20,4 +22,5 @@ public class PedidoRequest {
     private String comentario;
     private Boolean enviado;
     private String estado;
+    private List<DetallePedidoRequest> detalles; // Aquí se añaden los detalles
 }

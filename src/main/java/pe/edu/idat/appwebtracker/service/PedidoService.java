@@ -24,8 +24,7 @@ public class PedidoService {
 
     public List<Pedido>listarPedidos(){return pedidoRepository.findAll();}
     @Transactional(propagation = Propagation.REQUIRED)
-    public ResultadoResponse registrarPedido(PedidoRequest pedidoRequest,
-                                            List<DetallePedidoRequest> detallePedidoRequestList) {
+    public ResultadoResponse registrarPedido(PedidoRequest pedidoRequest) {
         String mensaje="Pedido registrado correctamente";
         Boolean respuesta=true;
         try {
@@ -45,7 +44,8 @@ public class PedidoService {
 
             Pedido insertpedido = pedidoRepository.save(pedido);
 
-            for(DetallePedidoRequest detallePedidoRequest : detallePedidoRequestList){
+            //for(DetallePedidoRequest detallePedidoRequest : detallePedidoRequestList){
+            for (DetallePedidoRequest detallePedidoRequest : pedidoRequest.getDetalles()) {
                 DetallePedido detallePedido = new DetallePedido();
 
                 detallePedido.setId(detallePedidoRequest.getId());
@@ -67,6 +67,7 @@ public class PedidoService {
             respuesta = false;
 
         }
-        return null;
+        // Devolver la respuesta
+        return ResultadoResponse.builder().mensaje(mensaje).respuesta(respuesta).build();
     }
 }

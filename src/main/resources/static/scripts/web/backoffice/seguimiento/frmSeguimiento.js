@@ -72,7 +72,7 @@ $(document).on("click", ".btnactualizar", function(){
     listarPosiciones(currentPosicionId)
 
     // Deshabilitar los campos
-    $("#cboestado").prop("disabled", true);
+    //$("#cboestado").prop("disabled", true);
     $("#cboProducto").prop("disabled", true);
     $("#cbocliente").prop("disabled", true);
     $("#txtidPosicion").prop("disabled", true);
@@ -180,7 +180,7 @@ function listarPosiciones(currentPosicionId){
             posiciones.forEach(function(posicion) {
                 const selected = currentPosicionId == posicion.id ? 'selected' : '';
                 //posicionesSelect.append(`<option value="${posicion.id}" ${selected}>${posicion.producto.descripcion}</option>`);
-                const descripcionCompleta = `ID: ${posicion.id} - ${posicion.pedido.cliente.nombre} - ${posicion.producto.descripcion}`;
+                const descripcionCompleta = `Pedido N°: ${posicion.pedido.id} - Posición N°: ${posicion.id} - ${posicion.pedido.cliente.nombre} - ${posicion.producto.descripcion}`;
 
                 posicionesSelect.append(`<option value="${posicion.id}" ${selected}>${descripcionCompleta}</option>`);
             });

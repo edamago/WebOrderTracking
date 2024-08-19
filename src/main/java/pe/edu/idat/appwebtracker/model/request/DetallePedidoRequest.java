@@ -8,7 +8,6 @@ import pe.edu.idat.appwebtracker.model.bd.Producto;
 @Data
 public class DetallePedidoRequest {
     private Integer id;
-    private Integer t_pedido_id;
     private Integer t_producto_id;
     private Integer cantidad;
     private Double precio;
