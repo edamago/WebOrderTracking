@@ -212,6 +212,7 @@ function listarDetalle(){
                     //"<td><input type='checkbox' disabled "+checkboxEnviado+"></td>"+
                     "<td>"+checkboxEnviado+"</td>"+
                     "<td>"+value.estado.descripcion+"</td>"+
+                    "<td>"+value.detallePedido.pedido.id+"</td>"+
                     "<td>"+
                         "<button type='button' class='btn btn-info btnactualizar'" +
                             " data-id='"+value.id+"'"+
@@ -233,6 +234,7 @@ function listarDetalle(){
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+    const filterIdPedidoInput = document.getElementById('filterIdPedido');
     const filterIdInput = document.getElementById('filterIdDetalle');
     const filterClienteInput = document.getElementById('filterCliente');
     const filterProductoInput = document.getElementById('filterProducto');
@@ -240,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const rows = table.getElementsByTagName('tr');
 
     function filterTable() {
+        const filterIdPedidoValue = filterIdPedidoInput.value.toLowerCase();
         const filterIdValue = filterIdInput.value.toLowerCase();
         const filterClienteValue = filterClienteInput.value.toLowerCase();
         const filterProductoValue = filterProductoInput.value.toLowerCase();
@@ -250,14 +253,19 @@ document.addEventListener('DOMContentLoaded', function () {
             const productoCell = cells[2]; // Columna de producto
             const clienteCell = cells[3]; // Columna de cliente
 
+            const idPedidoCell = cells[8]; // Columna de n° pedido
+
             const idDetalleText = idDetalleCell ? idDetalleCell.textContent.toLowerCase() : '';
             const productoText = productoCell ? productoCell.textContent.toLowerCase() : '';
             const clienteText = clienteCell ? clienteCell.textContent.toLowerCase() : '';
 
+            const idPedidoText = idPedidoCell ? idPedidoCell.textContent.toLowerCase() : '';
+
             if (
                 idDetalleText.includes(filterIdValue) &&
                 productoText.includes(filterProductoValue) &&
-                clienteText.includes(filterClienteValue)
+                clienteText.includes(filterClienteValue) &&
+                idPedidoText.includes(filterIdPedidoValue)
             ) {
                 rows[i].style.display = ''; // Mostrar fila
             } else {
@@ -269,4 +277,5 @@ document.addEventListener('DOMContentLoaded', function () {
     filterIdInput.addEventListener('keyup', filterTable);
     filterClienteInput.addEventListener('keyup', filterTable);
     filterProductoInput.addEventListener('keyup', filterTable);
+    filterIdPedidoInput.addEventListener('keyup', filterTable);
 });

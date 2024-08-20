@@ -39,11 +39,13 @@
                     <td th:text="${pedido.fecha}"></td>
                     <td th:text="${pedido.atencion}"></td>
                     <td th:text="${pedido.moneda}"></td>
-                    <td th:text="${pedido.subtotal}"></td>
-                    <td th:text="${pedido.igv}"></td>
-                    <td th:text="${pedido.total}"></td>
+                    <td th:text="${#numbers.formatDecimal(pedido.subtotal, 2, 2)}" style="text-align: right;"></td>
+                    <td th:text="${#numbers.formatDecimal(pedido.igv, 2, 2)}" style="text-align: right;"></td>
+                    <td th:text="${#numbers.formatDecimal(pedido.total, 2, 2)}" style="text-align: right;"></td>
                     <td th:text="${pedido.comentario}"></td>
-                    <td th:text="${pedido.enviado}"></td>
+                    <td>
+                        <input type="checkbox" th:checked="${pedido.enviado}" disabled>
+                    </td>
                     <td th:text="${pedido.estado}"></td>
                     <td th:text="${pedido.cliente.id}"></td>
                     <td th:text="${pedido.cliente.nombre}"></td>

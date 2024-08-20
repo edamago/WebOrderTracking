@@ -21,6 +21,10 @@
 
         <div class="mb-3 d-flex">
             <div class="me-2" style="width: 20%;">
+                <label for="filterIdPedido" class="form-label">Filtrar por N° Pedido:</label>
+                <input type="text" class="form-control" id="filterIdPedido" placeholder="Ingrese N° Pedido">
+            </div>
+            <div class="me-2" style="width: 20%;">
                 <label for="filterIdDetalle" class="form-label">Filtrar por posición:</label>
                 <input type="text" class="form-control" id="filterIdDetalle" placeholder="Ingrese id posición">
             </div>
@@ -47,7 +51,7 @@
                 <th scope="col">Comentario</th>
                 <th scope="col">Enviado</th>
                 <th scope="col">Estado</th>
-
+                <th scope="col">Pedido</th>
             </tr>
             </thead>
             <tbody>
@@ -62,6 +66,7 @@
                     <input type="checkbox" th:checked="${seguimiento.enviado}" disabled>
                 </td>
                 <td th:text="${seguimiento.estado.descripcion}"></td>
+                <td th:text="${seguimiento.detallePedido.pedido.id}"></td>
                 <td>
                     <button type="button" class="btn btn-info btnactualizar"
                             th:data-id="${seguimiento.id}"

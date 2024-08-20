@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="~{layout::head}">
-
+    <style>
+        body {
+            background-image: url('/imagenes/ingeniero.jpg');
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-attachment: fixed; /* Hace que el fondo permanezca fijo al hacer scroll */
+        }
+    </style>
 </head>
 <body>
 
@@ -9,7 +16,7 @@
 
 <div class="username-container">
     <div class="message">
-        ¡Bienvenido usuario x, <span th:text="${session.usuario}"></span>! Gracias por usar nuestra aplicación.
+        ¡Bienvenido , <span th:text="${session.usuario}"></span>! Gracias por usar nuestra aplicación.
     </div>
 </div>
 
